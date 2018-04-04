@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+		</script>
+		<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+		<meta charset="utf-8" />
+		<title>动态加载选项</title>
+		
+		<style type="text/css">
+			.myContent {
+				width: 600px;
+				height: 450px;
+				background-color: whitesmoke;
+				text-align: center;
+				margin: 100px auto 0px auto;
+				padding: 20px;
+				overflow-y: auto;
+			}
+			.myContent p {
+				font-size: 100px;
+				font-weight: 800;
+				color: lightcoral;
+				/*margin: 0px 10px 10px 10px;*/
+			}
+			.mainInput {
+				width: 550px;
+				height: 65px;
+				margin: 0px auto 0px auto;
+			}
+			.mainInput input{
+				width: 550px;
+				height: 100%;
+				font-size: 30px;
+				padding-left: 50px;
+				border: 1px black solid;
+			}
+			.mainItem {
+				width: 550px;
+				height: 65px;
+				margin: 0px auto;
+				background-color: white;
+			}
+			.mainItem .myCheckBox {
+				width: 30px;
+				height: 30px;
+				float: left;
+				margin: 20px 0px 0px 10px;
+			}
+			.myLabel {
+				display: block;
+				float: left;
+				text-align: left;
+				width: 450px;
+				height: 50px;
+				margin: 0px;
+				font-size: 20px;
+				padding: 20px 0px 0px 30px;
+			}
+			.myBtn {
+				width: 30px;
+				height: 30px;
+				float: right;
+				margin: 20px 20px 0px 0px;
+				color: red;
+			}
+			.mainFooter {
+				width: 550px;
+				height: 30px;
+				margin: 0px auto;
+				background-color: white;
+				display: none;
+			}
+			.itemNum {
+				float: left;
+				margin-left: 5px;
+			}
+			.doSomething {
+				float: left;
+				height: 20px;
+				width: 300px;
+				margin: 0px 0px 0px 50px;
+			}
+			.doSomething>div {
+				float: left;
+			}
+			.all {
+				width: 50px;
+			}
+			.active {
+				width: 80px;
+			}
+			.completed {
+				width: 100px;
+			}
+			.clearSelect {
+				float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="myContent">
+			<div class="myContentHeader">
+				<p>todos</p>
+			</div>
+			<div class="myContentMain">
+				<div class="mainInput">
+					<input name="myInput" type="text" placeholder="What needs to be done?" />
+				</div>
+				<div class="mainItems">
+					<!--<div class="mainItem">
+						<input type="checkbox" class="myCheckBox" />
+						<label class="myLabel">121</label>
+						<span class="glyphicon glyphicon-remove myBtn"></span>
+					</div>-->
+				</div>
+				<div class="mainFooter">
+					<div class="itemNum">
+					</div>
+					<div class="doSomething">
+						<div class="all">
+							<a>All</a>
+						</div>
+						<div class="active">
+							<a>Active</a>
+						</div>
+						<div class="completed">
+							<a>Completed</a>
+						</div>
+					</div>
+					<div class="clearSelect">
+						<a>Clear completed</a>
+					</div>
+				</div>
+			</div>
+			<div class="myContentFooter">
+				
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			var id = 0;
+			//输入框回车事件
+			$("input[name='myInput']").on('keydown', function (e) {
+		        if (e.keyCode == 13 || e.which == 13) {
+		            var val = $(this).val();
+		            if(val == undefined || val == "") {
+		            	return;
+		            }
+		            id++;
+		            var item = '<div class="mainItem" id="'+ id +'">'
+						+'<input type="checkbox" class="myCheckBox" />'
+						+'<label class="myLabel">'+ val +'</label>'
+						+'<span class="glyphicon glyphicon-remove myBtn"></span>'
+						+'</div>';
+					
+		            $(".mainItems").append(item);
+		            $(this).val("");
+		        	rushNum();
+		        }
+		    
+			    //点击删除按钮事件
+			    $(".myBtn").click(function () {
+			    	$(this).parent().remove();
+			    	rushNum();
+			    });
+		    });
+		    //显示全部
+		    $(".all").click(function() {
+		    	$(".mainItems").find(".mainItem").show();
+		    });
+		    
+		    $(".active").click(function() {
+		    	$(".mainItems").find(".mainItem").show();
+		    	$(".mainItem").each(function(index) {
+		    	 	if($(this).find("input[type='checkbox']").is(":checked")){
+		    	 		$(this).hide();
+		    	 	}
+		    	});
+		    });
+		    
+		    $(".completed").click(function() {
+		    	$(".mainItems").find(".mainItem").show();
+		    	$(".mainItem").each(function(index) {
+			    	if(!$(this).find("input[type='checkbox']").is(":checked")){
+			    		$(this).hide();
+		    		}
+		    	});
+		    });
+		    
+		    $(".clearSelect").click(function() {
+		    	$(".mainItem").each(function(index) {
+		    		if($(this).find("input[type='checkbox']").is(":checked")){
+		    			$(this).remove();
+		    			rushNum();
+		    		}
+		    	});
+		    });
+		});
+		//更新数量
+		function rushNum() {
+			var num = $(".mainItems").children().length;console.log(num);
+			if(num == undefined || num == 0) {
+				$(".mainFooter").hide();
+			} else {
+				$(".mainFooter").show();
+			}
+			var str = num + " items left";
+			$(".itemNum").text(str);
+		}
+	</script>
+</html>
