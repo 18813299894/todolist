@@ -108,11 +108,11 @@
 					<input name="myInput" type="text" placeholder="What needs to be done?" />
 				</div>
 				<div class="mainItems">
-					<!--<div class="mainItem">
+					<!-- <div class="mainItem">
 						<input type="checkbox" class="myCheckBox" />
 						<label class="myLabel">121</label>
 						<span class="glyphicon glyphicon-remove myBtn"></span>
-					</div>-->
+					</div> -->
 				</div>
 				<div class="mainFooter">
 					<div class="itemNum">
@@ -167,26 +167,38 @@
 			    });
 		    });
 		    //显示全部
+		    $(".mainItems").on('change','.myCheckBox',function(){
+		    	if($(this).prop("checked")){
+		    		$(this).parent().addClass('current');
+		    	}
+		    	else{
+		    		$(this).parent().removeClass('current');
+		    	}
+		    });
+
 		    $(".all").click(function() {
 		    	$(".mainItems").find(".mainItem").show();
 		    });
 		    
 		    $(".active").click(function() {
-		    	$(".mainItems").find(".mainItem").show();
+		    /*	$(".mainItems").find(".mainItem").show();
 		    	$(".mainItem").each(function(index) {
 		    	 	if($(this).find("input[type='checkbox']").is(":checked")){
 		    	 		$(this).hide();
 		    	 	}
-		    	});
+		    	});*/
+		    	$(".mainItem.current").hide().siblings().show();
 		    });
 		    
 		    $(".completed").click(function() {
-		    	$(".mainItems").find(".mainItem").show();
+		    	/*$(".mainItems").find(".mainItem").show();
 		    	$(".mainItem").each(function(index) {
 			    	if(!$(this).find("input[type='checkbox']").is(":checked")){
-			    		$(this).hide();
-		    		}
-		    	});
+			     		$(this).hide();
+		    	 	}
+		    	});*/
+		    	$(".mainItem.current").show().siblings().hide();
+		    	
 		    });
 		    
 		    $(".clearSelect").click(function() {
